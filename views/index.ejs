@@ -23,6 +23,11 @@
 <body>
 <%- include('navbar.ejs') -%>
 <div class="container-fluid">
+	<div class="alert alert-info" role="alert">
+		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+		Commands containing potentially harmful operations (like rm -rf /, format, etc.) will be rejected.
+		Always review commands carefully before saving.
+	</div>
 	<h2>Cronjobs</h2>
 	<div class="form-group">
 		<label for="env_vars">Environment Variables:</label>
