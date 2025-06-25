@@ -33,56 +33,106 @@ var job_command = "";
 function deleteJob(_id){
 	// TODO fix this. pass callback properly
 	messageBox("<p> Do you want to delete this Job? </p>", "Confirm delete", null, null, function(){
-		$.post(routes.remove, {_id: _id}, function(){
-			location.reload();
-		});
+		$.post(routes.remove, {_id: _id})
+			.done(function(response) {
+				if (response.success) {
+					location.reload();
+				} else {
+					errorMessageBox(response.error || 'Unknown error occurred');
+				}
+			})
+			.fail(function(xhr) {
+				const response = xhr.responseJSON || {};
+				errorMessageBox(response.error || xhr.statusText || 'Request failed');
+			});
 	});
 }
 
 function stopJob(_id){
 	messageBox("<p> Do you want to stop this Job? </p>", "Confirm stop job", null, null, function(){
-		$.post(routes.stop, {_id: _id}, function(){
-			location.reload();
-		});
+		$.post(routes.stop, {_id: _id})
+			.done(function(response) {
+				if (response.success) {
+					location.reload();
+				} else {
+					errorMessageBox(response.error || 'Unknown error occurred');
+				}
+			})
+			.fail(function(xhr) {
+				const response = xhr.responseJSON || {};
+				errorMessageBox(response.error || xhr.statusText || 'Request failed');
+			});
 	});
 }
 
 function startJob(_id){
 	messageBox("<p> Do you want to start this Job? </p>", "Confirm start job", null, null, function(){
-		$.post(routes.start, {_id: _id}, function(){
-			location.reload();
-		});
+		$.post(routes.start, {_id: _id})
+			.done(function(response) {
+				if (response.success) {
+					location.reload();
+				} else {
+					errorMessageBox(response.error || 'Unknown error occurred');
+				}
+			})
+			.fail(function(xhr) {
+				const response = xhr.responseJSON || {};
+				errorMessageBox(response.error || xhr.statusText || 'Request failed');
+			});
 	});
 }
 
 function runJob(_id){
 	messageBox("<p> Do you want to run this Job? </p>", "Confirm run job", null, null, function(){
-		$.post(routes.run, {_id: _id}, function(){
-			location.reload();
-		});
-		
+		$.post(routes.run, {_id: _id})
+			.done(function(response) {
+				if (response.success) {
+					infoMessageBox("Job started successfully!", "Success");
+					setTimeout(() => location.reload(), 2000);
+				} else {
+					errorMessageBox(response.error || 'Unknown error occurred');
+				}
+			})
+			.fail(function(xhr) {
+				const response = xhr.responseJSON || {};
+				errorMessageBox(response.error || xhr.statusText || 'Request failed');
+			});
 	});
 }
 
 function setCrontab(){
 	messageBox("<p> Do you want to set the crontab file? </p>", "Confirm crontab setup", null, null, function(){
-		$.get(routes.crontab, { "env_vars": $("#env_vars").val() }, function(){
-			// TODO show only if success
-			infoMessageBox("Successfuly set crontab file!","Information");
-			location.reload();
-		}).fail(function(response) {
-			errorMessageBox(response.statusText,"Error");
-		});
+		$.get(routes.crontab, { "env_vars": $("#env_vars").val() })
+			.done(function(response) {
+				if (response.success) {
+					infoMessageBox("Successfully set crontab file!", "Information");
+					location.reload();
+				} else {
+					errorMessageBox(response.error || 'Unknown error occurred');
+				}
+			})
+			.fail(function(xhr) {
+				const response = xhr.responseJSON || {};
+				errorMessageBox(response.error || xhr.statusText || 'Request failed');
+			});
 	});
 }
 
 function getCrontab(){
 	messageBox("<p> Do you want to get the crontab file? <br /> <b style='color:red'>NOTE: It is recommended to take a backup before this.</b> And refresh the page after this.</p>", "Confirm crontab retrieval", null, null, function(){
-		$.get(routes.import_crontab, { "env_vars": $("#env_vars").val() }, function(){
-			// TODO show only if success
-			infoMessageBox("Successfuly got the crontab file!","Information");
-			location.reload();
-		});
+		$.get(routes.import_crontab, { "env_vars": $("#env_vars").val() })
+			.done(function(response) {
+				if (response.success) {
+					infoMessageBox("Successfully got the crontab file!", "Information");
+					location.reload();
+				} else {
+					errorMessageBox(response.error || 'Unknown error occurred');
+				}
+			})
+			.fail(function(xhr) {
+				const response = xhr.responseJSON || {};
+				errorMessageBox(response.error || xhr.statusText || 'Request failed');
+			});
 	});
 }
 
@@ -117,15 +167,60 @@ function editJob(_id){
 
 	$("#job-save").unbind("click"); // remove existing events attached to this
 	$("#job-save").click(function(){
-		// TODO good old boring validations
-		if (!schedule) {
+		// Basic client-side validation
+		if (!job_command || job_command.trim() === '') {
+			errorMessageBox('Command cannot be empty');
+			return;
+		}
+		
+		if (!schedule || schedule.trim() === '') {
 			schedule = "* * * * *";
 		}
+		
+		// Client-side security check for obviously dangerous commands
+		const dangerousPatterns = [
+			/\brm\s+(-rf\s+)?\//, 
+			/\bformat\b/i,
+			/\bmkfs\b/i,
+			/\bfdisk\b/i,
+			/\bdd.*of=\/dev/i,
+			/\breboot\b/i,
+			/\bshutdown\b/i,
+			/\bhalt\b/i,
+			/\bpoweroff\b/i
+		];
+		
+		for (let pattern of dangerousPatterns) {
+			if (pattern.test(job_command)) {
+				if (!confirm('WARNING: This command appears to contain potentially destructive operations. Are you sure you want to proceed?')) {
+					return;
+				}
+				break;
+			}
+		}
+		
 		let name = $("#job-name").val();
 		let mailing = JSON.parse($("#job-mailing").attr("data-json"));
 		let logging = $("#job-logging").prop("checked");
-		$.post(routes.save, {name: name, command: job_command , schedule: schedule, _id: _id, logging: logging, mailing: mailing}, function(){
-			location.reload();
+		
+		$.post(routes.save, {
+			name: name, 
+			command: job_command, 
+			schedule: schedule, 
+			_id: _id, 
+			logging: logging, 
+			mailing: mailing
+		})
+		.done(function(response) {
+			if (response.success) {
+				location.reload();
+			} else {
+				errorMessageBox(response.error || 'Unknown error occurred');
+			}
+		})
+		.fail(function(xhr) {
+			const response = xhr.responseJSON || {};
+			errorMessageBox(response.error || xhr.statusText || 'Request failed');
 		});
 	});
 }
@@ -146,40 +241,113 @@ function newJob(){
 	job_string();
 	$("#job-save").unbind("click"); // remove existing events attached to this
 	$("#job-save").click(function(){
-		// TODO good old boring validations
-		if (!schedule) {
+		// Basic client-side validation
+		if (!job_command || job_command.trim() === '') {
+			errorMessageBox('Command cannot be empty');
+			return;
+		}
+		
+		if (!schedule || schedule.trim() === '') {
 			schedule = "* * * * *";
 		}
+		
+		// Client-side security check for obviously dangerous commands
+		const dangerousPatterns = [
+			/\brm\s+(-rf\s+)?\//, 
+			/\bformat\b/i,
+			/\bmkfs\b/i,
+			/\bfdisk\b/i,
+			/\bdd.*of=\/dev/i,
+			/\breboot\b/i,
+			/\bshutdown\b/i,
+			/\bhalt\b/i,
+			/\bpoweroff\b/i
+		];
+		
+		for (let pattern of dangerousPatterns) {
+			if (pattern.test(job_command)) {
+				if (!confirm('WARNING: This command appears to contain potentially destructive operations. Are you sure you want to proceed?')) {
+					return;
+				}
+				break;
+			}
+		}
+		
 		let name = $("#job-name").val();
 		let mailing = JSON.parse($("#job-mailing").attr("data-json"));
 		let logging = $("#job-logging").prop("checked");
-		$.post(routes.save, {name: name, command: job_command , schedule: schedule, _id: -1, logging: logging, mailing: mailing}, function(){
-			location.reload();
+		
+		$.post(routes.save, {
+			name: name, 
+			command: job_command, 
+			schedule: schedule, 
+			_id: -1, 
+			logging: logging, 
+			mailing: mailing
+		})
+		.done(function(response) {
+			if (response.success) {
+				location.reload();
+			} else {
+				errorMessageBox(response.error || 'Unknown error occurred');
+			}
+		})
+		.fail(function(xhr) {
+			const response = xhr.responseJSON || {};
+			errorMessageBox(response.error || xhr.statusText || 'Request failed');
 		});
 	});
 }
 
 function doBackup(){
 	messageBox("<p> Do you want to take backup? </p>", "Confirm backup", null, null, function(){
-		$.get(routes.backup, {}, function(){
-			location.reload();
-		});
+		$.get(routes.backup)
+			.done(function(response) {
+				if (response.success) {
+					infoMessageBox("Backup created successfully!", "Success");
+					location.reload();
+				} else {
+					errorMessageBox(response.error || 'Unknown error occurred');
+				}
+			})
+			.fail(function(xhr) {
+				const response = xhr.responseJSON || {};
+				errorMessageBox(response.error || xhr.statusText || 'Request failed');
+			});
 	});
 }
 
 function delete_backup(db_name){
 	messageBox("<p> Do you want to delete this backup? </p>", "Confirm delete", null, null, function(){
-		$.get(routes.delete_backup, {db: db_name}, function(){
-			location = routes.root;
-		});
+		$.get(routes.delete_backup, {db: db_name})
+			.done(function(response) {
+				if (response.success) {
+					location = routes.root;
+				} else {
+					errorMessageBox(response.error || 'Unknown error occurred');
+				}
+			})
+			.fail(function(xhr) {
+				const response = xhr.responseJSON || {};
+				errorMessageBox(response.error || xhr.statusText || 'Request failed');
+			});
 	});
 }
 
 function restore_backup(db_name){
 	messageBox("<p> Do you want to restore this backup? </p>", "Confirm restore", null, null, function(){
-		$.get(routes.restore_backup, {db: db_name}, function(){
-			location = routes.root;
-		});
+		$.get(routes.restore_backup, {db: db_name})
+			.done(function(response) {
+				if (response.success) {
+					location = routes.root;
+				} else {
+					errorMessageBox(response.error || 'Unknown error occurred');
+				}
+			})
+			.fail(function(xhr) {
+				const response = xhr.responseJSON || {};
+				errorMessageBox(response.error || xhr.statusText || 'Request failed');
+			});
 	});
 }
 

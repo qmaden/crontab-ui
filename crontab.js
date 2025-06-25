@@ -1,7 +1,8 @@
 /*jshint esversion: 6*/
 //load database
-var Datastore = require('nedb');
+var Datastore = require('@seald-io/nedb');
 var path = require("path");
+var validator = require('validator');
 
 exports.db_folder = process.env.CRON_DB_PATH === undefined ? path.join(__dirname,  "crontabs") : process.env.CRON_DB_PATH;
 console.log("Cron db path: " + exports.db_folder);
@@ -30,7 +31,54 @@ if (!fs.existsSync(exports.log_folder)){
     fs.mkdirSync(exports.log_folder);
 }
 
+// Security validation function
+function validateCommandSecurity(command) {
+	if (!command || typeof command !== 'string') return false;
+	
+	// Block dangerous patterns
+	const dangerousPatterns = [
+		/\brm\s+(-rf\s+)?\//, // rm with root paths
+		/\bmv\s+.*\s+\//, // mv to root
+		/\bcp\s+.*\s+\//, // cp to root
+		/\bchmod\s+(777|666)/, // dangerous permissions
+		/\bchown\s+root/, // changing to root ownership
+		/\bsu\s+/, // switch user
+		/\bsudo\s+/, // sudo commands
+		/\b(wget|curl).*\|\s*(sh|bash)/, // download and execute
+		/\b(nc|netcat).*-e/, // reverse shells
+		/\beval\s*\(/, // eval execution
+		/\bexec\s*\(/, // exec execution
+		/>\s*.*\/(etc|bin|sbin|usr\/bin|usr\/sbin)/, // redirect to system dirs
+		/\;\s*(rm|mv|cp)\s+/, // chained dangerous commands
+		/\|\s*(rm|mv|cp)\s+/, // piped dangerous commands
+		/\&\&\s*(rm|mv|cp)\s+/, // conditional dangerous commands
+		/\b(format|mkfs|fdisk|dd.*of=\/dev|halt|poweroff)\b/i, // destructive commands
+	];
+	
+	for (let pattern of dangerousPatterns) {
+		if (pattern.test(command)) {
+			console.warn(`Dangerous command pattern detected: ${command}`);
+			return false;
+		}
+	}
+	
+	return true;
+}
+
 crontab = function(name, command, schedule, stopped, logging, mailing){
+	// Validate inputs
+	if (name && (typeof name !== 'string' || name.length > 100)) {
+		throw new Error('Invalid job name');
+	}
+	
+	if (!validateCommandSecurity(command)) {
+		throw new Error('Command contains potentially dangerous operations');
+	}
+	
+	if (!schedule || typeof schedule !== 'string') {
+		throw new Error('Invalid schedule');
+	}
+	
 	var data = {};
 	data.name = name;
 	data.command = command;
@@ -47,40 +95,86 @@ crontab = function(name, command, schedule, stopped, logging, mailing){
 };
 
 exports.create_new = function(name, command, schedule, logging, mailing){
-	var tab = crontab(name, command, schedule, false, logging, mailing);
-	tab.created = new Date().valueOf();
-	tab.saved = false;
-	db.insert(tab);
+	try {
+		var tab = crontab(name, command, schedule, false, logging, mailing);
+		tab.created = new Date().valueOf();
+		tab.saved = false;
+		db.insert(tab);
+	} catch (error) {
+		console.error('Error creating new crontab:', error);
+		throw error;
+	}
 };
 
 exports.update = function(data){
-	var tab = crontab(data.name, data.command, data.schedule, null, data.logging, data.mailing);
-	tab.saved = false;
-	db.update({_id: data._id}, tab);
+	try {
+		var tab = crontab(data.name, data.command, data.schedule, null, data.logging, data.mailing);
+		tab.saved = false;
+		db.update({_id: data._id}, tab);
+	} catch (error) {
+		console.error('Error updating crontab:', error);
+		throw error;
+	}
 };
 
 exports.status = function(_id, stopped){
+	if (!_id) {
+		throw new Error('Job ID is required');
+	}
 	db.update({_id: _id},{$set: {stopped: stopped, saved: false}});
 };
 
 exports.remove = function(_id){
+	if (!_id) {
+		throw new Error('Job ID is required');
+	}
 	db.remove({_id: _id}, {});
 };
 
 // Iterates through all the crontab entries in the db and calls the callback with the entries
 exports.crontabs = function(callback){
 	db.find({}).sort({ created: -1 }).exec(function(err, docs){
+		if (err) {
+			console.error('Error fetching crontabs:', err);
+			return callback([]);
+		}
+		
 		for(var i=0; i<docs.length; i++){
-			if(docs[i].schedule == "@reboot")
-				docs[i].next = "Next Reboot";
-			else
-				try {
+			try {
+				if(docs[i].schedule == "@reboot") {
+					docs[i].human = "At system startup";
+					docs[i].next = "Next Reboot";
+				}
+				else if(docs[i].schedule.startsWith("@")) {
+					// Handle other cron macros
+					const macros = {
+						"@yearly": "Once a year (0 0 1 1 *)",
+						"@annually": "Once a year (0 0 1 1 *)",
+						"@monthly": "Once a month (0 0 1 * *)",
+						"@weekly": "Once a week (0 0 * * 0)",
+						"@daily": "Once a day (0 0 * * *)",
+						"@midnight": "Once a day (0 0 * * *)",
+						"@hourly": "Once an hour (0 * * * *)"
+					};
+					
+					docs[i].human = macros[docs[i].schedule] || docs[i].schedule;
+					if (docs[i].schedule !== "@reboot") {
+						try {
+							docs[i].next = cron_parser.parseExpression(docs[i].schedule).next().toString();
+						} catch(err) {
+							docs[i].next = "invalid";
+						}
+					}
+				}
+				else {
 					docs[i].human = cronstrue.toString(docs[i].schedule, { locale: humanCronLocate });
 					docs[i].next = cron_parser.parseExpression(docs[i].schedule).next().toString();
-				} catch(err) {
-					console.error(err);
-					docs[i].next = "invalid";
 				}
+			} catch(err) {
+				console.error('Error parsing schedule for job:', docs[i]._id, err);
+				docs[i].human = "Invalid schedule";
+				docs[i].next = "invalid";
+			}
 		}
 		callback(docs);
 	});

@@ -8,9 +8,24 @@ Crontab UI
 [![npm](https://img.shields.io/docker/pulls/alseambusher/crontab-ui.svg?style=flat-square)](https://lifepluslinux.blogspot.com/2015/06/crontab-ui-easy-and-safe-way-to-manage.html)
 [![npm](https://img.shields.io/npm/l/crontab-ui.svg?style=flat-square)](https://lifepluslinux.blogspot.com/2015/06/crontab-ui-easy-and-safe-way-to-manage.html)
 
+**🔒 SECURITY ENHANCED VERSION 🔒**
+
+This is a security-enhanced version of crontab-ui with improved authentication, command validation, and protection against dangerous operations.
+
 Editing the plain text crontab is error prone for managing jobs, e.g., adding jobs, deleting jobs, or pausing jobs. A small mistake can easily bring down all the jobs and might cost you a lot of time. With Crontab UI, it is very easy to manage crontab. Here are the key features of Crontab UI.
 
 ![flow](https://github.com/alseambusher/crontab-ui/raw/gh-pages/screenshots/flow.gif)
+
+## 🔒 Security Features
+
+1. **Required Authentication**: Authentication is mandatory by default
+2. **Command Validation**: Blocks dangerous commands (rm -rf /, format, etc.)
+3. **Rate Limiting**: Protects against brute force and abuse
+4. **Security Headers**: Implements CSP, XSS protection, and more
+5. **Input Sanitization**: All inputs are validated and sanitized
+6. **Audit Trail**: Enhanced logging for security monitoring
+
+## Key Features
 
 1. Easy setup. You can even import from existing crontab.
 2. Safe adding, deleting or pausing jobs. Easy to maintain hundreds of jobs.
@@ -18,6 +33,8 @@ Editing the plain text crontab is error prone for managing jobs, e.g., adding jo
 4. Export crontab and deploy on other machines without much hassle.
 5. Error log support.
 6. Mailing and hooks support.
+7. **NEW**: @reboot schedule support with proper UI button
+8. **NEW**: Enhanced security with dangerous command blocking
 
 Read [this](https://lifepluslinux.blogspot.com/2015/06/crontab-ui-easy-and-safe-way-to-manage.html) to see more details.
 
@@ -31,6 +48,28 @@ Get latest `node` from [here](https://nodejs.org/en/download/current/). Then,
 If you need to set/use an alternative host, port OR base url, you may do so by setting an environment variable before starting the process:
 
     HOST=0.0.0.0 PORT=9000 BASE_URL=/alse crontab-ui
+
+## 🔒 Security Setup (REQUIRED)
+
+**IMPORTANT**: For security, you MUST set authentication credentials:
+
+    export BASIC_AUTH_USER="your_username"
+    export BASIC_AUTH_PWD="your_secure_password"
+    crontab-ui
+
+**Default Credentials Warning**: If you don't set credentials, the app will use `admin/changeme` - CHANGE THESE IMMEDIATELY!
+
+### Optional SSL Setup
+
+For production, enable HTTPS:
+
+    export SSL_KEY="/path/to/private.key"
+    export SSL_CERT="/path/to/certificate.crt"
+    export BASIC_AUTH_USER="your_username"
+    export BASIC_AUTH_PWD="your_secure_password"
+    crontab-ui
+
+See [SECURITY.md](SECURITY.md) for complete security guide.
 
 By default, db, backups and logs are stored in the installation directory. It is **recommended** that it be overriden using env variable `CRON_DB_PATH`. This is particularly helpful in case you **update** crontab-ui.
 
