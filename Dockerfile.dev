@@ -1,0 +1,53 @@
+# Development Dockerfile with hot reloading
+FROM node:20-alpine
+
+# Install additional development tools
+RUN apk --no-cache add \
+    git \
+    curl \
+    supervisor \
+    tzdata \
+    && rm -rf /var/cache/apk/*
+
+# Set working directory
+WORKDIR /crontab-ui
+
+# Environment variables for development
+ENV CRON_PATH=/etc/crontabs
+ENV HOST=0.0.0.0
+ENV PORT=8000
+ENV CRON_IN_DOCKER=true
+ENV NODE_ENV=development
+
+# Create necessary directories and files
+RUN mkdir -p $CRON_PATH /var/log/supervisor \
+    && touch $CRON_PATH/root \
+    && chmod +x $CRON_PATH/root
+
+# Copy package files first (for better caching)
+COPY package*.json ./
+
+# Install all dependencies (including dev dependencies)
+RUN npm install
+
+# Copy supervisor configuration for development
+COPY supervisord.dev.conf /etc/supervisord.conf
+
+# Copy application code (will be overridden by volume mount in dev)
+COPY . .
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:$PORT/health || exit 1
+
+# Labels
+LABEL maintainer="crontab-ui"
+LABEL description="Development Crontab-UI docker image"
+LABEL version="dev"
+
+# Expose port
+EXPOSE $PORT
+EXPOSE 9229
+
+# Start with nodemon for development
+CMD ["npm", "run", "start:dev"]
