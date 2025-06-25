@@ -1,9 +1,56 @@
-version: '3.7'
+version: '3.8'
 
 services:
   crontab-ui:
-    build: .
-    image: alseambusher/crontab-ui
-    network_mode: bridge
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: crontab-ui:latest
+    container_name: crontab-ui
+    restart: unless-stopped
     ports:
-      - 8000:8000
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=8000
+      - CRON_IN_DOCKER=true
+    volumes:
+      - crontab_data:/crontab-ui/crontabs
+      - crontab_logs:/crontab-ui/logs
+    networks:
+      - crontab-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Add a reverse proxy
+  nginx:
+    image: nginx:alpine
+    container_name: crontab-ui-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - crontab-ui
+    networks:
+      - crontab-network
+    profiles:
+      - with-proxy
+
+volumes:
+  crontab_data:
+    driver: local
+  crontab_logs:
+    driver: local
+
+networks:
+  crontab-network:
+    driver: bridge

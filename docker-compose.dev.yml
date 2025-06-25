@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  crontab-ui-dev:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    image: crontab-ui:dev
+    container_name: crontab-ui-dev
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+      - "9229:9229"  # Node.js debugger port
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0
+      - PORT=8000
+      - CRON_IN_DOCKER=true
+      - DEBUG=*
+    volumes:
+      - .:/crontab-ui
+      - /crontab-ui/node_modules  # Anonymous volume for node_modules
+      - crontab_data_dev:/crontab-ui/crontabs
+      - crontab_logs_dev:/crontab-ui/logs
+    networks:
+      - crontab-network-dev
+    command: npm run start:dev
+
+volumes:
+  crontab_data_dev:
+    driver: local
+  crontab_logs_dev:
+    driver: local
+
+networks:
+  crontab-network-dev:
+    driver: bridge
