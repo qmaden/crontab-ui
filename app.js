@@ -1,602 +1,562 @@
-/*jshint esversion: 6*/
-var express = require('express');
-var app = express();
-var crontab = require("./crontab");
-var restore = require("./restore");
-var package_json = require('./package.json');
-var moment = require('moment');
-var basicAuth = require('express-basic-auth');
-var rateLimit = require('express-rate-limit');
-var helmet = require('helmet');
-var validator = require('validator');
-var xss = require('xss');
-var http = require('http');
-var https = require('https');
+import express from 'express';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import fs from 'fs';
+import http from 'http';
+import https from 'https';
+import compression from 'express-compression';
+import basicAuth from 'express-basic-auth';
+import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
+import validator from 'validator';
+import DOMPurify from 'dompurify';
+import { JSDOM } from 'jsdom';
+import multer from 'multer';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime.js';
+import 'dotenv/config';
 
-var path = require('path');
-var mime = require('mime-types');
-var fs = require('fs');
-var busboy = require('connect-busboy'); // for file upload
+// Local imports
+import { config } from './config.js';
+import { db } from './database.js';
+import { logger, requestLogger, logSecurityEvent, logError } from './logger.js';
+import { performanceMonitor } from './performance.js';
+import { clusterManager } from './cluster.js';
+
+// ES Module compatibility
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Configure dayjs
+dayjs.extend(relativeTime);
+
+// Initialize DOMPurify for server-side XSS protection
+const window = new JSDOM('').window;
+const purify = DOMPurify(window);
+
+// Create Express app
+const app = express();
+
+// Trust proxy for rate limiting behind reverse proxy
+app.set('trust proxy', 1);
+
+// Performance middleware
+if (config.monitoring.enabled) {
+  app.use(performanceMonitor.createMiddleware());
+}
+
+// Request logging
+app.use(requestLogger);
+
+// Compression middleware
+if (config.compression.enabled) {
+  app.use(compression({
+    level: config.compression.level,
+    threshold: config.compression.threshold,
+    filter: config.compression.filter
+  }));
+}
 
 // Security middleware
-app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'", "cdn.datatables.net"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "cdn.datatables.NET"],
-            imgSrc: ["'self'", "data:", "https:"],
-            connectSrc: ["'self'"],
-            fontSrc: ["'self'"],
-            objectSrc: ["'none'"],
-            upgradeInsecureRequests: [],
-        },
-    },
-}));
+app.use(helmet(config.security.helmet));
 
 // Rate limiting
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-    message: 'Too many requests from this IP, please try again later.',
-    standardHeaders: true,
-    legacyHeaders: false,
+  windowMs: config.security.rateLimit.windowMs,
+  max: config.security.rateLimit.max,
+  message: { error: 'Too many requests from this IP, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    logSecurityEvent('rate_limit_exceeded', {
+      ip: req.ip,
+      userAgent: req.get('User-Agent'),
+      url: req.url
+    });
+    res.status(429).json({ error: 'Too many requests from this IP, please try again later.' });
+  }
 });
 app.use(limiter);
 
 // Stricter rate limiting for sensitive operations
 const strictLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 20, // limit each IP to 20 requests per windowMs
-    message: 'Too many sensitive operations from this IP, please try again later.',
-    standardHeaders: true,
-    legacyHeaders: false,
+  windowMs: config.security.rateLimit.windowMs,
+  max: config.security.rateLimit.strictMax,
+  message: { error: 'Too many sensitive operations from this IP, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    logSecurityEvent('strict_rate_limit_exceeded', {
+      ip: req.ip,
+      userAgent: req.get('User-Agent'),
+      url: req.url
+    });
+    res.status(429).json({ error: 'Too many sensitive operations from this IP, please try again later.' });
+  }
 });
 
-// base url
-var base_url = require("./routes").base_url
-app.locals.baseURL = base_url
+// Parse JSON and URL-encoded data
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// basic auth
-var BASIC_AUTH_USER = process.env.BASIC_AUTH_USER;
-var BASIC_AUTH_PWD = process.env.BASIC_AUTH_PWD;
-
-// Enhanced authentication - require auth by default
-if (!BASIC_AUTH_USER || !BASIC_AUTH_PWD) {
-    console.warn('WARNING: No authentication configured. Set BASIC_AUTH_USER and BASIC_AUTH_PWD environment variables for security.');
-    console.warn('Using default credentials - CHANGE THESE IMMEDIATELY!');
-    BASIC_AUTH_USER = 'admin';
-    BASIC_AUTH_PWD = 'changeme';
-}
-
-// Input validation function
-function validateInput(input, type = 'general') {
-    if (!input || typeof input !== 'string') return false;
-    
-    // Sanitize XSS
-    input = xss(input);
-    
-    switch (type) {
-        case 'command':
-            // Block dangerous commands
-            const dangerousCommands = [
-                /\brm\s+(-rf\s+)?\//, // rm with root paths
-                /\bmv\s+.*\s+\//, // mv to root
-                /\bcp\s+.*\s+\//, // cp to root
-                /\bchmod\s+(777|666)/, // dangerous permissions
-                /\bchown\s+root/, // changing to root ownership
-                /\bsu\s+/, // switch user
-                /\bsudo\s+/, // sudo commands (unless explicitly allowed)
-                /\b(wget|curl).*\|\s*(sh|bash)/, // download and execute
-                /\b(nc|netcat).*-e/, // reverse shells
-                /\beval\s*\(/, // eval execution
-                /\bexec\s*\(/, // exec execution
-                />\s*.*\/(etc|bin|sbin|usr\/bin|usr\/sbin)/, // redirect to system dirs
-                /\;\s*(rm|mv|cp)\s+/, // chained dangerous commands
-                /\|\s*(rm|mv|cp)\s+/, // piped dangerous commands
-                /\&\&\s*(rm|mv|cp)\s+/, // conditional dangerous commands
-            ];
-            
-            for (let pattern of dangerousCommands) {
-                if (pattern.test(input)) {
-                    return false;
-                }
-            }
-            break;
-        case 'schedule':
-            // Validate cron expression format
-            if (input.startsWith('@')) {
-                const validMacros = ['@reboot', '@yearly', '@annually', '@monthly', '@weekly', '@daily', '@midnight', '@hourly'];
-                return validMacros.includes(input);
-            }
-            // Basic cron pattern validation (5 or 6 fields)
-            const cronParts = input.split(/\s+/);
-            if (cronParts.length < 5 || cronParts.length > 6) return false;
-            break;
-        case 'name':
-            // Validate job name
-            if (input.length > 100) return false;
-            if (!/^[a-zA-Z0-9_\-\s\.]+$/.test(input)) return false;
-            break;
+// File upload configuration
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: config.features.import.maxFileSize,
+    files: 1
+  },
+  fileFilter: (req, file, cb) => {
+    const ext = '.' + file.originalname.split('.').pop();
+    if (config.features.import.allowedExtensions.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type'), false);
     }
-    
-    return input;
-}
-
-app.use(function(req, res, next) {
-    res.setHeader('WWW-Authenticate', 'Basic realm="Crontab UI - Restricted Access"')
-    next();
+  }
 });
 
-app.use(basicAuth({
+// Static file serving with caching
+app.use('/static', express.static(config.paths.publicPath, {
+  maxAge: '1d',
+  etag: true,
+  lastModified: true,
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js') || path.endsWith('.css')) {
+      res.setHeader('Cache-Control', 'public, max-age=86400'); // 1 day
+    }
+  }
+}));
+
+// View engine setup
+app.set('view engine', 'ejs');
+app.set('views', config.paths.viewsPath);
+
+// Enhanced input validation and sanitization
+function validateAndSanitize(input, type = 'general') {
+  if (!input || typeof input !== 'string') return false;
+  
+  // Sanitize XSS using DOMPurify
+  input = purify.sanitize(input);
+  
+  switch (type) {
+    case 'command':
+      // Enhanced dangerous command patterns
+      const dangerousPatterns = [
+        /\brm\s+(-rf\s+)?\//, // rm with root paths
+        /\bmv\s+.*\s+\//, // mv to root
+        /\bcp\s+.*\s+\//, // cp to root  
+        /\bchmod\s+(777|666)/, // dangerous permissions
+        /\bchown\s+root/, // changing to root ownership
+        /\b(su|sudo)\s+/, // privilege escalation
+        /\b(wget|curl).*\|\s*(sh|bash)/, // download and execute
+        /\b(nc|netcat).*-e/, // reverse shells
+        /\b(eval|exec)\s*\(/, // code execution
+        />\s*.*\/(etc|bin|sbin|usr\/bin|usr\/sbin)/, // redirect to system dirs
+        /\;\s*(rm|mv|cp)\s+/, // chained dangerous commands
+        /\|\s*(rm|mv|cp)\s+/, // piped dangerous commands
+        /\&\&\s*(rm|mv|cp)\s+/, // conditional dangerous commands
+        /\b(format|mkfs|fdisk|dd.*of=\/dev|reboot|shutdown|halt|poweroff)\b/i, // destructive commands
+        /\b(iptables|ufw|firewall).*(-D|-F|--delete|--flush)/i, // firewall manipulation
+        /\bcrontab\s+-r/i, // crontab removal
+        /\b(kill|killall|pkill).*-9/i, // force kill
+        /\bmount.*\/dev/i, // device mounting
+        /\bumount.*-f/i, // force unmount
+        /\b(service|systemctl).*stop/i, // service stopping
+      ];
+      
+      for (let pattern of dangerousPatterns) {
+        if (pattern.test(input)) {
+          logSecurityEvent('dangerous_command_blocked', {
+            command: input,
+            pattern: pattern.toString()
+          });
+          return false;
+        }
+      }
+      break;
+      
+    case 'schedule':
+      // Enhanced cron expression validation
+      if (input.startsWith('@')) {
+        const validMacros = ['@reboot', '@yearly', '@annually', '@monthly', '@weekly', '@daily', '@midnight', '@hourly'];
+        return validMacros.includes(input) ? input : false;
+      }
+      
+      // Validate cron pattern (5 or 6 fields)
+      const cronParts = input.split(/\s+/);
+      if (cronParts.length < 5 || cronParts.length > 6) return false;
+      
+      // Basic field validation
+      const patterns = [
+        /^(\*|[0-5]?[0-9]|[0-5]?[0-9]-[0-5]?[0-9]|[0-5]?[0-9]\/[0-9]+|\*\/[0-9]+)$/, // minute
+        /^(\*|[01]?[0-9]|2[0-3]|[01]?[0-9]-[01]?[0-9]|2[0-3]-2[0-3]|[01]?[0-9]\/[0-9]+|\*\/[0-9]+)$/, // hour
+        /^(\*|[01]?[0-9]|[12][0-9]|3[01]|[01]?[0-9]-[01]?[0-9]|[12][0-9]-[12][0-9]|3[01]-3[01]|[01]?[0-9]\/[0-9]+|\*\/[0-9]+)$/, // day
+        /^(\*|[01]?[0-9]|1[0-2]|[01]?[0-9]-[01]?[0-9]|1[0-2]-1[0-2]|[01]?[0-9]\/[0-9]+|\*\/[0-9]+)$/, // month
+        /^(\*|[0-6]|[0-6]-[0-6]|[0-6]\/[0-9]+|\*\/[0-9]+)$/ // day of week
+      ];
+      
+      for (let i = 0; i < Math.min(cronParts.length, 5); i++) {
+        if (!patterns[i].test(cronParts[i])) {
+          return false;
+        }
+      }
+      break;
+      
+    case 'name':
+      // Validate job name
+      if (input.length > 100) return false;
+      if (!/^[a-zA-Z0-9_\-\s\.]+$/.test(input)) return false;
+      break;
+      
+    case 'env':
+      // Validate environment variables
+      const lines = input.split('\n');
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed && !trimmed.startsWith('#')) {
+          if (!/^[A-Z_][A-Z0-9_]*\s*=/.test(trimmed)) {
+            return false;
+          }
+        }
+      }
+      break;
+  }
+  
+  return input;
+}
+
+// Authentication middleware
+if (config.security.auth.required) {
+  app.use((req, res, next) => {
+    res.setHeader('WWW-Authenticate', `Basic realm="${config.security.auth.realm}"`);
+    next();
+  });
+
+  app.use(basicAuth({
     users: {
-        [BASIC_AUTH_USER]: BASIC_AUTH_PWD
+      [config.security.auth.user]: config.security.auth.password
     },
     challenge: true,
-    realm: 'Crontab UI'
-}));
+    realm: config.security.auth.realm,
+    unauthorizedResponse: (req) => {
+      logSecurityEvent('authentication_failed', {
+        ip: req.ip,
+        userAgent: req.get('User-Agent'),
+        url: req.url
+      });
+      return { error: 'Authentication required' };
+    }
+  }));
 
-// ssl credentials
-var credentials = {
-  key: process.env.SSL_KEY ? fs.readFileSync(process.env.SSL_KEY) : '',
-  cert: process.env.SSL_CERT ? fs.readFileSync(process.env.SSL_CERT) : '',
+  // Log successful authentication
+  app.use((req, res, next) => {
+    logSecurityEvent('authentication_success', {
+      ip: req.ip,
+      userAgent: req.get('User-Agent'),
+      user: req.auth?.user
+    });
+    next();
+  });
 }
 
-if (
-  (credentials.key && !credentials.cert) ||
-  (credentials.cert && !credentials.key)
-) {
-    console.error('Please provide both SSL_KEY and SSL_CERT');
-    process.exit(1);
+// Initialize database and start application
+(async () => {
+  await db.initialize();
+
+  const { routes } = await import('./routes.js');
+
+  async function renderIndex(res, env) {
+  try {
+    const crontabs = await db.getAllCrontabs();
+    const stats = await db.getStats();
+    let backups = [];
+    try {
+      backups = fs.readdirSync(config.paths.crontabsPath);
+      backups = backups.filter(x => x.endsWith('.db'));
+    } catch (e) {
+      // ignore
+    }
+
+    const processedCrontabs = await Promise.all(
+      crontabs.map(async (crontab) => {
+        const processed = { ...crontab };
+        try {
+          if (crontab.schedule === "@reboot") {
+            processed.human = "At system startup";
+            processed.next = "Next Reboot";
+          } else if (crontab.schedule.startsWith("@")) {
+            const macros = {
+              "@yearly": "Once a year (0 0 1 1 *)",
+              "@annually": "Once a year (0 0 1 1 *)",
+              "@monthly": "Once a month (0 0 1 * *)",
+              "@weekly": "Once a week (0 0 * * 0)",
+              "@daily": "Once a day (0 0 * * *)",
+              "@midnight": "Once a day (0 0 * * *)",
+              "@hourly": "Once an hour (0 * * * *)"
+            };
+            processed.human = macros[crontab.schedule] || crontab.schedule;
+            if (crontab.schedule !== "@reboot") {
+              const { parseExpression } = await import('cron-parser');
+              processed.next = parseExpression(crontab.schedule).next().toString();
+            }
+          } else {
+            const [{ toString }, { parseExpression }] = await Promise.all([
+              import('cronstrue/i18n'),
+              import('cron-parser')
+            ]);
+            processed.human = toString(crontab.schedule, { locale: 'en' });
+            processed.next = parseExpression(crontab.schedule).next().toString();
+          }
+        } catch (err) {
+          logger.error('Error parsing schedule for job:', crontab._id, err);
+          processed.human = "Invalid schedule";
+          processed.next = "invalid";
+        }
+        return processed;
+      })
+    );
+
+    res.render('index', {
+      crontabs: JSON.stringify(processedCrontabs),
+      stats: JSON.stringify(stats),
+      moment: dayjs,
+      routes: JSON.stringify(routes),
+      env: env || '',
+      backups: backups,
+      config: {
+        version: '0.5.0',
+        features: config.features
+      }
+    });
+  } catch (error) {
+    logError(error, { route: '/', ip: res.req.ip });
+    res.status(500).json({ error: 'Internal server error' });
   }
-
-var startHttpsServer = credentials.key && credentials.cert;
-
-// include the routes
-var routes = require("./routes").routes;
-var routes_relative = require("./routes").relative
-
-// set the view engine to ejs
-app.set('view engine', 'ejs');
-
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-}));
-app.use(busboy()); // to support file uploads
-
-// include all folders
-app.use(base_url, express.static(__dirname + '/public'));
-app.use(base_url, express.static(__dirname + '/public/css'));
-app.use(base_url, express.static(__dirname + '/public/js'));
-app.use(base_url, express.static(__dirname + '/config'));
-app.set('views', __dirname + '/views');
-
-// set host to 127.0.0.1 or the value set by environment var HOST
-app.set('host', (process.env.HOST || '127.0.0.1'));
-
-// set port to 8000 or the value set by environment var PORT
-app.set('port', (process.env.PORT || 8000));
-
-// root page handler
-app.get(routes.root, function(req, res) {
-  // reload the database before rendering
-	crontab.reload_db();
-	// send all the required parameters
-	crontab.crontabs( function(docs){
-		res.render('index', {
-			routes : JSON.stringify(routes_relative),
-			crontabs : JSON.stringify(docs),
-			backups : crontab.get_backup_names(),
-			env : crontab.get_env(),
-      moment: moment
-		});
-	});
-});
-
-/*
-Handle to save crontab to database
-If it is a new job @param _id is set to -1
-@param name, command, schedule, logging has to be sent with _id (if exists)
-*/
-app.post(routes.save, strictLimiter, function(req, res) {
-	try {
-		// Validate inputs
-		const name = validateInput(req.body.name, 'name');
-		const command = validateInput(req.body.command, 'command');
-		const schedule = validateInput(req.body.schedule, 'schedule');
-		
-		if (!command) {
-			return res.status(400).json({ error: 'Invalid or potentially dangerous command detected' });
-		}
-		
-		if (!schedule) {
-			return res.status(400).json({ error: 'Invalid schedule format' });
-		}
-		
-		if (name && name.length > 100) {
-			return res.status(400).json({ error: 'Job name too long' });
-		}
-		
-		// Additional security check for extremely dangerous patterns
-		if (/\b(format|mkfs|fdisk|dd.*of=\/dev|reboot|shutdown|halt|poweroff)\b/i.test(command)) {
-			return res.status(403).json({ error: 'Command contains potentially destructive operations and is not allowed' });
-		}
-		
-		// new job
-		if(req.body._id == -1){
-			crontab.create_new(name, command, schedule, req.body.logging, req.body.mailing);
-		}
-		// edit job
-		else{
-			crontab.update({
-				_id: req.body._id,
-				name: name,
-				command: command,
-				schedule: schedule,
-				logging: req.body.logging,
-				mailing: req.body.mailing
-			});
-		}
-		res.json({ success: true });
-	} catch (error) {
-		console.error('Error saving crontab:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-});
-
-// set stop to job
-app.post(routes.stop, strictLimiter, function(req, res) {
-	try {
-		if (!req.body._id) {
-			return res.status(400).json({ error: 'Job ID is required' });
-		}
-		crontab.status(req.body._id, true);
-		res.json({ success: true });
-	} catch (error) {
-		console.error('Error stopping job:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-});
-
-// set start to job
-app.post(routes.start, strictLimiter, function(req, res) {
-	try {
-		if (!req.body._id) {
-			return res.status(400).json({ error: 'Job ID is required' });
-		}
-		crontab.status(req.body._id, false);
-		res.json({ success: true });
-	} catch (error) {
-		console.error('Error starting job:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-});
-
-// remove a job
-app.post(routes.remove, strictLimiter, function(req, res) {
-	try {
-		if (!req.body._id) {
-			return res.status(400).json({ error: 'Job ID is required' });
-		}
-		crontab.remove(req.body._id);
-		res.json({ success: true });
-	} catch (error) {
-		console.error('Error removing job:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-});
-
-// run a job
-app.post(routes.run, strictLimiter, function(req, res) {
-	try {
-		if (!req.body._id) {
-			return res.status(400).json({ error: 'Job ID is required' });
-		}
-		crontab.runjob(req.body._id);
-		res.json({ success: true });
-	} catch (error) {
-		console.error('Error running job:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-});
-
-// set crontab. Needs env_vars to be passed
-app.get(routes.crontab, strictLimiter, function(req, res, next) {
-	try {
-		// Validate environment variables
-		let env_vars = req.query.env_vars || '';
-		if (env_vars) {
-			env_vars = validateInput(env_vars);
-			if (!env_vars) {
-				return res.status(400).json({ error: 'Invalid environment variables' });
-			}
-		}
-		
-		crontab.set_crontab(env_vars, function(err) {
-			if (err) {
-				console.error('Error setting crontab:', err);
-				return res.status(500).json({ error: 'Failed to set crontab' });
-			}
-			res.json({ success: true });
-		});
-	} catch (error) {
-		console.error('Error in crontab route:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-});
-
-// backup crontab db
-app.get(routes.backup, strictLimiter, function(req, res) {
-	try {
-		crontab.backup((err) => {
-			if (err) {
-				console.error('Error creating backup:', err);
-				return res.status(500).json({ error: 'Failed to create backup' });
-			}
-			res.json({ success: true });
-		});
-	} catch (error) {
-		console.error('Error in backup route:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-});
-
-// This renders the restore page similar to backup page
-app.get(routes.restore, function(req, res) {
-	try {
-		// Validate db parameter
-		const db = req.query.db;
-		if (!db || !validator.isAlphanumeric(db.replace(/[\s\-\.]/g, ''))) {
-			return res.status(400).json({ error: 'Invalid database name' });
-		}
-		
-		// get all the crontabs
-		restore.crontabs(db, function(docs){
-			res.render('restore', {
-				routes : JSON.stringify(routes_relative),
-				crontabs : JSON.stringify(docs),
-				backups : crontab.get_backup_names(),
-				db: db
-			});
-		});
-	} catch (error) {
-		console.error('Error in restore route:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-});
-
-// delete backup db
-app.get(routes.delete_backup, strictLimiter, function(req, res) {
-	try {
-		const db = req.query.db;
-		if (!db || !validator.isAlphanumeric(db.replace(/[\s\-\.]/g, ''))) {
-			return res.status(400).json({ error: 'Invalid database name' });
-		}
-		
-		restore.delete(db);
-		res.json({ success: true });
-	} catch (error) {
-		console.error('Error deleting backup:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-});
-
-// restore from backup db
-app.get(routes.restore_backup, strictLimiter, function(req, res) {
-	try {
-		const db = req.query.db;
-		if (!db || !validator.isAlphanumeric(db.replace(/[\s\-\.]/g, ''))) {
-			return res.status(400).json({ error: 'Invalid database name' });
-		}
-		
-		crontab.restore(db);
-		res.json({ success: true });
-	} catch (error) {
-		console.error('Error restoring backup:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-});
-
-// export current crontab db so that user can download it
-app.get(routes.export, function(req, res) {
-	try {
-		var file = crontab.crontab_db_file;
-
-		// Security check - ensure file is within allowed directory
-		if (!file.startsWith(crontab.db_folder)) {
-			return res.status(403).json({ error: 'Access denied' });
-		}
-
-		if (!fs.existsSync(file)) {
-			return res.status(404).json({ error: 'File not found' });
-		}
-
-		var filename = path.basename(file);
-		var mimetype = mime.lookup(file);
-
-		res.setHeader('Content-disposition', 'attachment; filename=' + filename);
-		res.setHeader('Content-type', mimetype);
-
-		var filestream = fs.createReadStream(file);
-		filestream.pipe(res);
-	} catch (error) {
-		console.error('Error exporting file:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-});
-
-// import from exported crontab db
-app.post(routes.import, strictLimiter, function(req, res) {
-	try {
-		var fstream;
-		req.pipe(req.busboy);
-		req.busboy.on('file', function (fieldname, file, filename) {
-			// Validate filename
-			if (!filename || filename.length > 255) {
-				return res.status(400).json({ error: 'Invalid filename' });
-			}
-			
-			// Only allow .db files
-			if (!filename.endsWith('.db')) {
-				return res.status(400).json({ error: 'Only .db files are allowed' });
-			}
-			
-			fstream = fs.createWriteStream(crontab.crontab_db_file);
-			file.pipe(fstream);
-			fstream.on('close', function () {
-				crontab.reload_db();
-				res.redirect(routes.root);
-			});
-		});
-	} catch (error) {
-		console.error('Error importing file:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-});
-
-// import from current ACTUALL crontab
-app.get(routes.import_crontab, strictLimiter, function(req, res) {
-	try {
-		crontab.import_crontab();
-		res.json({ success: true });
-	} catch (error) {
-		console.error('Error importing crontab:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-});
-
-function sendLog(path, req, res) {
-	try {
-		// Security check - ensure path is within log folder
-		if (!path.startsWith(crontab.log_folder)) {
-			return res.status(403).json({ error: 'Access denied' });
-		}
-		
-		if (fs.existsSync(path)) {
-			// Additional security - limit file size to prevent DoS
-			const stats = fs.statSync(path);
-			if (stats.size > 10 * 1024 * 1024) { // 10MB limit
-				return res.status(413).json({ error: 'Log file too large' });
-			}
-			res.sendFile(path);
-		} else {
-			res.status(404).send("No logs found for this job");
-		}
-	} catch (error) {
-		console.error('Error sending log:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
 }
 
-// get the log file a given job. id passed as query param
-app.get(routes.logger, function(req, res) {
-	try {
-		const id = req.query.id;
-		if (!id || !validator.isAlphanumeric(id)) {
-			return res.status(400).json({ error: 'Invalid job ID' });
-		}
-		
-		let _file = path.join(crontab.log_folder, id + ".log");
-		sendLog(_file, req, res);
-	} catch (error) {
-		console.error('Error in logger route:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
+// Root route - Dashboard
+app.get('/', async (req, res) => {
+  try {
+    await renderIndex(res, process.env.CRON_IN_DOCKER);
+  } catch (error) {
+    logError(error, { route: '/', ip: req.ip });
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
-// get the log file a given job. id passed as query param
-app.get(routes.stdout, function(req, res) {
-	try {
-		const id = req.query.id;
-		if (!id || !validator.isAlphanumeric(id)) {
-			return res.status(400).json({ error: 'Invalid job ID' });
-		}
-		
-		let _file = path.join(crontab.log_folder, id + ".stdout.log");
-		sendLog(_file, req, res);
-	} catch (error) {
-		console.error('Error in stdout route:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-});
+  // Save/Update crontab
+  app.post('/save', strictLimiter, async (req, res) => {
+    try {
+      // Validate inputs
+      const name = validateAndSanitize(req.body.name, 'name');
+      const command = validateAndSanitize(req.body.command, 'command');
+      const schedule = validateAndSanitize(req.body.schedule, 'schedule');
+      
+      if (!command) {
+        logSecurityEvent('invalid_command_rejected', {
+          ip: req.ip,
+          command: req.body.command
+        });
+        return res.status(400).json({ error: 'Invalid or potentially dangerous command detected' });
+      }
+      
+      if (!schedule) {
+        return res.status(400).json({ error: 'Invalid schedule format' });
+      }
+      
+      if (name && name.length > 100) {
+        return res.status(400).json({ error: 'Job name too long' });
+      }
 
-// error handler
-app.use(function(err, req, res, next) {
-	var data = {};
-	var statusCode = err.statusCode || 500;
+      const jobData = {
+        name: name || '',
+        command,
+        schedule,
+        logging: req.body.logging === 'true' || req.body.logging === true,
+        mailing: req.body.mailing || {}
+      };
 
-	// Don't leak sensitive information in production
-	if (process.env.NODE_ENV === 'production') {
-		data.message = statusCode >= 500 ? 'Internal Server Error' : err.message;
-	} else {
-		data.message = err.message || 'Internal Server Error';
-		if (err.stack) {
-			data.stack = err.stack;
-		}
-	}
-
-	if (statusCode >= 500) {
-		console.error(err);
-	}
-
-	res.status(statusCode).json(data);
-});
-
-process.on('SIGINT', function() {
-  console.log("Exiting crontab-ui");
-  process.exit();
-})
-
-process.on('SIGTERM', function() {
-  console.log("Exiting crontab-ui");
-  process.exit();
-})
-
-var server = startHttpsServer ?
-  https.createServer(credentials, app) : http.createServer(app);
-
-server.listen(app.get('port'), app.get('host'), function() {
-  console.log("Node version:", process.versions.node);
-  fs.access(crontab.db_folder, fs.constants.W_OK, function(err) {
-    if(err){
-      console.error("Write access to", crontab.db_folder, "DENIED.");
-      process.exit(1);
+      if (req.body._id === -1 || req.body._id === '-1') {
+        // New job
+        const id = await db.createCrontab(jobData);
+        logger.info('New crontab created', { id, name, command, ip: req.ip });
+      } else {
+        // Update existing job
+        await db.updateCrontab(req.body._id, jobData);
+        logger.info('Crontab updated', { id: req.body._id, name, command, ip: req.ip });
+      }
+      
+      res.json({ success: true });
+    } catch (error) {
+      logError(error, { route: '/save', ip: req.ip, body: req.body });
+      res.status(500).json({ error: 'Internal server error' });
     }
   });
-  // If --autosave is used then we will also save whatever is in the db automatically without having to mention it explictly
-  // we do this by watching log file and setting a on change hook to it
-  if (process.argv.includes("--autosave") || process.env.ENABLE_AUTOSAVE) {
-    crontab.autosave_crontab(()=>{});
-    fs.watchFile(crontab.crontab_db_file, () => {
-      crontab.autosave_crontab(()=>{
-        console.log("Attempted to autosave crontab");
-      });
+
+  // Start/Stop job
+  app.post('/start', strictLimiter, async (req, res) => {
+    try {
+      if (!req.body._id) {
+        return res.status(400).json({ error: 'Job ID is required' });
+      }
+      
+      await db.updateStatus(req.body._id, false);
+      logger.info('Job started', { id: req.body._id, ip: req.ip });
+      res.json({ success: true });
+    } catch (error) {
+      logError(error, { route: '/start', ip: req.ip });
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+  app.post('/stop', strictLimiter, async (req, res) => {
+    try {
+      if (!req.body._id) {
+        return res.status(400).json({ error: 'Job ID is required' });
+      }
+      
+      await db.updateStatus(req.body._id, true);
+      logger.info('Job stopped', { id: req.body._id, ip: req.ip });
+      res.json({ success: true });
+    } catch (error) {
+      logError(error, { route: '/stop', ip: req.ip });
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+  // Remove job
+  app.post('/remove', strictLimiter, async (req, res) => {
+    try {
+      if (!req.body._id) {
+        return res.status(400).json({ error: 'Job ID is required' });
+      }
+      
+      await db.deleteCrontab(req.body._id);
+      logger.info('Job removed', { id: req.body._id, ip: req.ip });
+      res.json({ success: true });
+    } catch (error) {
+      logError(error, { route: '/remove', ip: req.ip });
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+  // Health check endpoint
+  app.get('/health', (req, res) => {
+    const health = performanceMonitor.getHealthCheck();
+    res.json(health);
+  });
+
+  // Metrics endpoint (if monitoring enabled)
+  if (config.monitoring.enabled) {
+    app.get('/metrics', (req, res) => {
+      const metrics = performanceMonitor.getMetrics();
+      res.json(metrics);
     });
   }
-  if (process.argv.includes("--reset")){
-    console.log("Resetting crontab-ui");
-    var crontabdb = crontab.crontab_db_file;
-    var envdb = crontab.env_file;
 
-    console.log("Deleting " + crontabdb);
-    try{
-      fs.unlinkSync(crontabdb);
-    } catch (e) {
-      console.log("Unable to delete " + crontabdb);
+  // Error handling middleware
+  app.use((error, req, res, next) => {
+    const statusCode = error.statusCode || 500;
+    
+    logError(error, {
+      url: req.url,
+      method: req.method,
+      ip: req.ip,
+      userAgent: req.get('User-Agent')
+    });
+
+    if (process.env.NODE_ENV === 'production') {
+      res.status(statusCode).json({
+        error: statusCode >= 500 ? 'Internal Server Error' : error.message
+      });
+    } else {
+      res.status(statusCode).json({
+        error: error.message,
+        stack: error.stack
+      });
     }
+  });
 
-    console.log("Deleting " + envdb);
-    try{
-      fs.unlinkSync(envdb);
-    } catch (e) {
-      console.log("Unable to delete " + envdb);
+  // 404 handler
+  app.use((req, res) => {
+    res.status(404).json({ error: 'Not Found' });
+  });
+
+  // SSL configuration
+  let server;
+  if (config.ssl.enabled) {
+    const credentials = {
+      key: fs.readFileSync(config.ssl.key),
+      cert: fs.readFileSync(config.ssl.cert)
+    };
+    
+    if (config.ssl.ca) {
+      credentials.ca = fs.readFileSync(config.ssl.ca);
     }
-
-    crontab.reload_db();
+    
+    server = https.createServer(credentials, app);
+    logger.info('HTTPS server configured');
+  } else {
+    server = http.createServer(app);
   }
 
-  var protocol = startHttpsServer ? "https" : "http";
-  console.log("Crontab UI (" + package_json.version + ") is running at " + protocol + "://" + app.get('host') + ":" + app.get('port') + base_url);
+  // Server configuration for performance
+  server.keepAliveTimeout = config.server.keepAliveTimeout;
+  server.headersTimeout = config.server.headersTimeout;
+  server.maxHeaderSize = config.server.maxHeaderSize;
+
+  // Store server reference globally for graceful shutdown
+  global.server = server;
+
+  // Start server
+  server.listen(config.server.port, config.server.host, () => {
+    const protocol = config.ssl.enabled ? 'https' : 'http';
+    logger.info(`Crontab UI v0.5.0 (Performance Enhanced) running at ${protocol}://${config.server.host}:${config.server.port}`);
+    logger.info(`Node version: ${process.version}`);
+    logger.info(`Process ID: ${process.pid}`);
+    logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    
+    if (config.monitoring.enabled) {
+      logger.info('Performance monitoring enabled');
+    }
+    
+    if (config.cache.enabled) {
+      logger.info(`Caching enabled (${config.cache.type})`);
+    }
+  });
+
+  // Graceful shutdown
+  const gracefulShutdown = async (signal) => {
+    logger.info(`Received ${signal}, starting graceful shutdown`);
+    
+    server.close(async () => {
+      logger.info('HTTP server closed');
+      
+      try {
+        await db.close();
+        performanceMonitor.stop();
+        logger.info('Graceful shutdown completed');
+        process.exit(0);
+      } catch (error) {
+        logger.error('Error during shutdown:', error);
+        process.exit(1);
+      }
+    });
+    
+    // Force shutdown after 30 seconds
+    setTimeout(() => {
+      logger.error('Forced shutdown after timeout');
+      process.exit(1);
+    }, 30000);
+  };
+
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+  
+})().catch(error => {
+  logger.error('Failed to start application:', error);
+  process.exit(1);
 });
+
+export default app;

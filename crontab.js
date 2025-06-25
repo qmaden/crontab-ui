@@ -1,121 +1,308 @@
 /*jshint esversion: 6*/
-//load database
-var Datastore = require('@seald-io/nedb');
-var path = require("path");
-var validator = require('validator');
+// Modern crontab management with performance enhancements
+import Datastore from '@seald-io/nedb';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import fs from 'fs';
+import validator from 'validator';
+import cronParser from 'cron-parser';
+import cronstrue from 'cronstrue/i18n';
+import 'dotenv/config';
 
-exports.db_folder = process.env.CRON_DB_PATH === undefined ? path.join(__dirname,  "crontabs") : process.env.CRON_DB_PATH;
-console.log("Cron db path: " + exports.db_folder);
-exports.log_folder = path.join(exports.db_folder, 'logs');
-exports.env_file =  path.join(exports.db_folder, 'env.db');
-exports.crontab_db_file = path.join(exports.db_folder, 'crontab.db');
+// Modern imports
+import { config } from './config.js';
+import { db as modernDb } from './database.js';
+import { logger, logSecurityEvent } from './logger.js';
+import { performanceMonitor } from './performance.js';
 
-var db = new Datastore({ filename: exports.crontab_db_file});
-var cronPath = "/tmp";
+// ES Module compatibility
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Promisify exec for better async handling
+const execAsync = promisify(exec);
+
+// Enhanced configuration
+export const db_folder = process.env.CRON_DB_PATH === undefined ? join(__dirname, "crontabs") : process.env.CRON_DB_PATH;
+logger.info("Cron db path: " + db_folder);
+export const log_folder = join(db_folder, 'logs');
+export const env_file = join(db_folder, 'env.db');
+export const crontab_db_file = join(db_folder, 'crontab.db');
+
+// Legacy NeDB support with modern fallback
+const legacyDb = new Datastore({ filename: crontab_db_file});
+const cronPath = process.env.CRON_PATH || "/tmp";
 if(process.env.CRON_PATH !== undefined) {
-	console.log(`Path to crond files set using env variables ${process.env.CRON_PATH}`);
-	cronPath = process.env.CRON_PATH;
+	logger.info(`Path to crond files set using env variables ${process.env.CRON_PATH}`);
 }
 
-db.loadDatabase(function (err) {
-	if (err) throw err; // no hope, just terminate
-});
-
-var exec = require('child_process').exec;
-var fs = require('fs');
-var cron_parser = require("cron-parser");
-var cronstrue = require('cronstrue/i18n');
-var humanCronLocate = process.env.HUMANCRON ?? "en"
-
-if (!fs.existsSync(exports.log_folder)){
-    fs.mkdirSync(exports.log_folder);
+// Load legacy database with error handling
+try {
+	legacyDb.loadDatabase(function (err) {
+		if (err) {
+			logger.error('Failed to load legacy database:', err);
+			throw err;
+		}
+		logger.info('Legacy NeDB database loaded successfully');
+	});
+} catch (error) {
+	logger.error('Critical error loading legacy database:', error);
+	throw error;
 }
 
-// Security validation function
+const humanCronLocate = process.env.HUMANCRON ?? "en"
+logger.info("Cron db path: " + db_folder);
+export const log_folder = join(db_folder, 'logs');
+export const env_file = join(db_folder, 'env.db');
+export const crontab_db_file = join(db_folder, 'crontab.db');
+
+// Legacy NeDB support with modern fallback
+const legacyDb = new Datastore({ filename: crontab_db_file});
+const cronPath = process.env.CRON_PATH || "/tmp";
+if(process.env.CRON_PATH !== undefined) {
+	logger.info(`Path to crond files set using env variables ${process.env.CRON_PATH}`);
+}
+
+// Load legacy database with error handling
+try {
+	legacyDb.loadDatabase(function (err) {
+		if (err) {
+			logger.error('Failed to load legacy database:', err);
+			throw err;
+		}
+		logger.info('Legacy NeDB database loaded successfully');
+	});
+} catch (error) {
+	logger.error('Critical error loading legacy database:', error);
+	throw error;
+}
+
+const humanCronLocate = process.env.HUMANCRON ?? "en"
+
+// Create log folder if it doesn't exist
+if (!fs.existsSync(log_folder)){
+    fs.mkdirSync(log_folder, { recursive: true });
+}
+
+// Enhanced security validation with performance monitoring
 function validateCommandSecurity(command) {
-	if (!command || typeof command !== 'string') return false;
+	const timer = performanceMonitor.startTimer('validate_command_security');
 	
-	// Block dangerous patterns
-	const dangerousPatterns = [
-		/\brm\s+(-rf\s+)?\//, // rm with root paths
-		/\bmv\s+.*\s+\//, // mv to root
-		/\bcp\s+.*\s+\//, // cp to root
-		/\bchmod\s+(777|666)/, // dangerous permissions
-		/\bchown\s+root/, // changing to root ownership
-		/\bsu\s+/, // switch user
-		/\bsudo\s+/, // sudo commands
-		/\b(wget|curl).*\|\s*(sh|bash)/, // download and execute
-		/\b(nc|netcat).*-e/, // reverse shells
-		/\beval\s*\(/, // eval execution
-		/\bexec\s*\(/, // exec execution
-		/>\s*.*\/(etc|bin|sbin|usr\/bin|usr\/sbin)/, // redirect to system dirs
-		/\;\s*(rm|mv|cp)\s+/, // chained dangerous commands
-		/\|\s*(rm|mv|cp)\s+/, // piped dangerous commands
-		/\&\&\s*(rm|mv|cp)\s+/, // conditional dangerous commands
-		/\b(format|mkfs|fdisk|dd.*of=\/dev|halt|poweroff)\b/i, // destructive commands
-	];
-	
-	for (let pattern of dangerousPatterns) {
-		if (pattern.test(command)) {
-			console.warn(`Dangerous command pattern detected: ${command}`);
+	try {
+		if (!command || typeof command !== 'string') {
+			logSecurityEvent('Command validation failed: Invalid input type', { command });
 			return false;
 		}
+		
+		// Enhanced security patterns with modern regex
+		const dangerousPatterns = [
+			/\brm\s+(-rf\s+)?\//, // rm with root paths
+			/\bmv\s+.*\s+\//, // mv to root
+			/\bcp\s+.*\s+\//, // cp to root
+			/\bchmod\s+(777|666)/, // dangerous permissions
+			/\bchown\s+root/, // changing to root ownership
+			/\bsu\s+/, // switch user
+			/\bsudo\s+/, // sudo commands
+			/\b(wget|curl).*\|\s*(sh|bash|zsh|fish)/, // download and execute
+			/\b(nc|netcat|ncat).*(-e|-c)/, // reverse shells
+			/\beval\s*\(/, // eval execution
+			/\bexec\s*\(/, // exec execution
+			/>\s*.*\/(etc|bin|sbin|usr\/bin|usr\/sbin)/, // redirect to system dirs
+			/\;\s*(rm|mv|cp|chmod|chown)\s+/, // chained dangerous commands
+			/\|\s*(rm|mv|cp|chmod|chown)\s+/, // piped dangerous commands
+			/\&\&\s*(rm|mv|cp|chmod|chown)\s+/, // conditional dangerous commands
+			/\b(format|mkfs|fdisk|dd.*of=\/dev|halt|poweroff|reboot|shutdown)\b/i, // destructive commands
+			/\b(python|python3|node|php|ruby|perl)\s+.*-c\s+/, // script execution
+			/\b(bash|sh|zsh|fish)\s+.*-c\s+/, // shell execution
+			/\$(.*)\s*\|\s*(sh|bash|zsh)/, // variable expansion to shell
+			/\bkill\s+(-9\s+)?1\b/, // kill init process
+			/\b(docker|kubectl|systemctl)\s+(run|exec|start|stop|restart)/, // container/service management
+		];
+		
+		// Check each pattern
+		for (let pattern of dangerousPatterns) {
+			if (pattern.test(command)) {
+				logSecurityEvent('Dangerous command pattern detected', { 
+					command, 
+					pattern: pattern.source,
+					severity: 'high'
+				});
+				return false;
+			}
+		}
+		
+		// Additional XSS protection for command content
+		if (command.includes('<script>') || command.includes('javascript:')) {
+			logSecurityEvent('XSS attempt in command', { command });
+			return false;
+		}
+		
+		// Check command length to prevent buffer overflow attempts
+		if (command.length > 2000) {
+			logSecurityEvent('Command exceeds maximum length', { 
+				command: command.substring(0, 100) + '...', 
+				length: command.length 
+			});
+			return false;
+		}
+		
+		return true;
+	} finally {
+		timer.end();
 	}
-	
-	return true;
 }
 
-crontab = function(name, command, schedule, stopped, logging, mailing){
-	// Validate inputs
-	if (name && (typeof name !== 'string' || name.length > 100)) {
-		throw new Error('Invalid job name');
-	}
+// Enhanced crontab validation with modern practices
+function validateCronSchedule(schedule) {
+	const timer = performanceMonitor.startTimer('validate_cron_schedule');
 	
-	if (!validateCommandSecurity(command)) {
-		throw new Error('Command contains potentially dangerous operations');
-	}
-	
-	if (!schedule || typeof schedule !== 'string') {
-		throw new Error('Invalid schedule');
-	}
-	
-	var data = {};
-	data.name = name;
-	data.command = command;
-	data.schedule = schedule;
-	if(stopped !== null) {
-		data.stopped = stopped;
-	}
-	data.timestamp = (new Date()).toString();
-	data.logging = logging;
-	if (!mailing)
-		mailing = {};
-	data.mailing = mailing;
-	return data;
-};
-
-exports.create_new = function(name, command, schedule, logging, mailing){
 	try {
-		var tab = crontab(name, command, schedule, false, logging, mailing);
-		tab.created = new Date().valueOf();
-		tab.saved = false;
-		db.insert(tab);
-	} catch (error) {
-		console.error('Error creating new crontab:', error);
-		throw error;
+		if (!schedule || typeof schedule !== 'string') return false;
+		
+		// Clean up schedule
+		schedule = schedule.trim();
+		
+		// Validate using cron-parser
+		try {
+			cronParser.parseExpression(schedule);
+			return true;
+		} catch (error) {
+			logger.warn('Invalid cron schedule:', { schedule, error: error.message });
+			return false;
+		}
+	} finally {
+		timer.end();
 	}
-};
+}
 
-exports.update = function(data){
+// Modern crontab creation with enhanced validation
+function createCrontab(name, command, schedule, stopped, logging, mailing) {
+	const timer = performanceMonitor.startTimer('create_crontab');
+	
 	try {
-		var tab = crontab(data.name, data.command, data.schedule, null, data.logging, data.mailing);
-		tab.saved = false;
-		db.update({_id: data._id}, tab);
-	} catch (error) {
-		console.error('Error updating crontab:', error);
-		throw error;
+		// Enhanced input validation
+		if (name && (typeof name !== 'string' || name.length > 100 || name.length < 1)) {
+			throw new Error('Invalid job name: must be 1-100 characters');
+		}
+		
+		// Sanitize name to prevent injection
+		if (name && !validator.isAlphanumeric(name.replace(/[-_\s]/g, ''))) {
+			throw new Error('Job name contains invalid characters');
+		}
+		
+		if (!validateCommandSecurity(command)) {
+			throw new Error('Command contains potentially dangerous operations');
+		}
+		
+		if (!validateCronSchedule(schedule)) {
+			throw new Error('Invalid cron schedule format');
+		}
+		
+		// Create sanitized data object
+		const data = {
+			name: validator.escape(name || ''),
+			command: command.trim(),
+			schedule: schedule.trim(),
+			stopped: Boolean(stopped),
+			timestamp: new Date().toISOString(),
+			logging: Boolean(logging),
+			mailing: mailing || {},
+			created: Date.now(),
+			lastModified: Date.now(),
+			version: '2.0', // Version for tracking data format
+			saved: false
+		};
+		
+		logger.info('Created new crontab entry', { name: data.name, schedule: data.schedule });
+		return data;
+	} finally {
+		timer.end();
 	}
-};
+}
+
+// Modernized create_new function with dual database support
+export async function create_new(name, command, schedule, logging, mailing) {
+	const timer = performanceMonitor.startTimer('create_new_crontab');
+	
+	try {
+		const tab = createCrontab(name, command, schedule, false, logging, mailing);
+		
+		// Store in modern database if available
+		if (config.database.type === 'sqlite' && modernDb) {
+			try {
+				await modernDb.query(
+					'INSERT INTO crontabs (name, command, schedule, stopped, logging, mailing, created, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+					[tab.name, tab.command, tab.schedule, tab.stopped, tab.logging, JSON.stringify(tab.mailing), tab.created, tab.timestamp]
+				);
+				logger.info('Crontab stored in modern SQLite database');
+			} catch (error) {
+				logger.error('Failed to store in modern database, falling back to legacy:', error);
+			}
+		}
+		
+		// Store in legacy database as fallback
+		return new Promise((resolve, reject) => {
+			legacyDb.insert(tab, function(err, doc) {
+				if (err) {
+					logger.error('Failed to create crontab in legacy database:', err);
+					reject(err);
+				} else {
+					logger.info('Crontab created successfully', { id: doc._id, name: doc.name });
+					resolve(doc);
+				}
+			});
+		});
+	} catch (error) {
+		logger.error('Error creating new crontab:', error);
+		throw error;
+	} finally {
+		timer.end();
+	}
+}
+
+// Modernized update function with dual database support
+export async function update(data) {
+	const timer = performanceMonitor.startTimer('update_crontab');
+	
+	try {
+		const tab = createCrontab(data.name, data.command, data.schedule, null, data.logging, data.mailing);
+		tab.lastModified = Date.now();
+		tab.saved = false;
+		
+		// Update in modern database if available
+		if (config.database.type === 'sqlite' && modernDb && data._id) {
+			try {
+				await modernDb.query(
+					'UPDATE crontabs SET name = ?, command = ?, schedule = ?, logging = ?, mailing = ?, lastModified = ? WHERE id = ?',
+					[tab.name, tab.command, tab.schedule, tab.logging, JSON.stringify(tab.mailing), tab.lastModified, data._id]
+				);
+				logger.info('Crontab updated in modern database');
+			} catch (error) {
+				logger.error('Failed to update in modern database:', error);
+			}
+		}
+		
+		// Update in legacy database
+		return new Promise((resolve, reject) => {
+			legacyDb.update({_id: data._id}, tab, {}, function(err, numReplaced) {
+				if (err) {
+					logger.error('Error updating crontab in legacy database:', err);
+					reject(err);
+				} else {
+					logger.info('Crontab updated successfully', { id: data._id, replaced: numReplaced });
+					resolve(numReplaced);
+				}
+			});
+		});
+	} catch (error) {
+		logger.error('Error updating crontab:', error);
+		throw error;
+	} finally {
+		timer.end();
+	}
+}
 
 exports.status = function(_id, stopped){
 	if (!_id) {

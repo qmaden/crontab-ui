@@ -1,0 +1,966 @@
+2025-06-25 08:43:40 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8000 Error: listen EADDRINUSE: address already in use 127.0.0.1:8000
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:43:43 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8000 Error: listen EADDRINUSE: address already in use 127.0.0.1:8000
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:43:43 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8000 Error: listen EADDRINUSE: address already in use 127.0.0.1:8000
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:43:44 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8000 Error: listen EADDRINUSE: address already in use 127.0.0.1:8000
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:43:46 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8000 Error: listen EADDRINUSE: address already in use 127.0.0.1:8000
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:43:46 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8000 Error: listen EADDRINUSE: address already in use 127.0.0.1:8000
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:43:47 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8000 Error: listen EADDRINUSE: address already in use 127.0.0.1:8000
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:43:48 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8000 Error: listen EADDRINUSE: address already in use 127.0.0.1:8000
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:43:52 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8000 Error: listen EADDRINUSE: address already in use 127.0.0.1:8000
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:43:55 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8000 Error: listen EADDRINUSE: address already in use 127.0.0.1:8000
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:43:59 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8000 Error: listen EADDRINUSE: address already in use 127.0.0.1:8000
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:44:06 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8000 Error: listen EADDRINUSE: address already in use 127.0.0.1:8000
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:44:48 [31merror[39m: Application error ReferenceError: compression is not defined
+    at filter (file:///Users/maden/Documents/Linux/Scripts/crontab-ui/config.js:90:7)
+    at ServerResponse.onResponseHeaders (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express-compression/index.js:146:12)
+    at ServerResponse.writeHead (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/on-headers/index.js:35:16)
+    at ServerResponse._implicitHeader (node:_http_server:345:8)
+    at ServerResponse.end (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express-compression/index.js:107:14)
+    at ServerResponse.send (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/response.js:219:10)
+    at ServerResponse.json (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/response.js:250:15)
+    at unauthorized (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express-basic-auth/index.js:83:36)
+    at authMiddleware (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express-basic-auth/index.js:52:20)
+    at Layer.handleRequest (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/router/lib/layer.js:152:17)
+2025-06-25 08:46:56 [31merror[39m: Application error Error: Cannot find module 'ejs'
+Require stack:
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/express.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1405:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)
+    at Module._load (node:internal/modules/cjs/loader:1215:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+    at new View (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:81:14)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:552:12)
+2025-06-25 08:47:00 [31merror[39m: Application error Error: Cannot find module 'ejs'
+Require stack:
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/express.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1405:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)
+    at Module._load (node:internal/modules/cjs/loader:1215:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+    at new View (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:81:14)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:552:12)
+2025-06-25 08:54:35 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8887 Error: listen EADDRINUSE: address already in use 127.0.0.1:8887
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:56:32 [31merror[39m: Application error Error: Cannot find module 'ejs'
+Require stack:
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/express.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1405:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)
+    at Module._load (node:internal/modules/cjs/loader:1215:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+    at new View (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:81:14)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:552:12)
+2025-06-25 08:57:06 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8887 Error: listen EADDRINUSE: address already in use 127.0.0.1:8887
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:57:25 [31merror[39m: Application error Error: Cannot find module 'ejs'
+Require stack:
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/express.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1405:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)
+    at Module._load (node:internal/modules/cjs/loader:1215:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+    at new View (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:81:14)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:552:12)
+2025-06-25 09:00:04 [31merror[39m: Application error Error: Cannot find module 'ejs'
+Require stack:
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/express.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1405:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)
+    at Module._load (node:internal/modules/cjs/loader:1215:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+    at new View (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:81:14)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:552:12)
+2025-06-25 09:00:14 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8887 Error: listen EADDRINUSE: address already in use 127.0.0.1:8887
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 09:00:34 [31merror[39m: Application error Error: Cannot find module 'ejs'
+Require stack:
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/express.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1405:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)
+    at Module._load (node:internal/modules/cjs/loader:1215:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+    at new View (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:81:14)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:552:12)
+2025-06-25 09:02:59 [31merror[39m: Application error Error: Cannot find module 'ejs'
+Require stack:
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/express.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1405:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)
+    at Module._load (node:internal/modules/cjs/loader:1215:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+    at new View (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:81:14)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:552:12)
+2025-06-25 09:04:00 [31merror[39m: Application error Error: Cannot find module 'ejs'
+Require stack:
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/express.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1405:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)
+    at Module._load (node:internal/modules/cjs/loader:1215:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+    at new View (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:81:14)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:552:12)
+2025-06-25 09:42:55 [31merror[39m: Application error Error: Cannot find module 'ejs'
+Require stack:
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/express.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1405:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)
+    at Module._load (node:internal/modules/cjs/loader:1215:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+    at new View (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:81:14)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:552:12)
+2025-06-25 09:45:04 [31merror[39m: Application error Error: Cannot find module 'ejs'
+Require stack:
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js
+- /Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/express.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1405:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)
+    at Module._load (node:internal/modules/cjs/loader:1215:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+    at new View (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:81:14)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:552:12)
+2025-06-25 09:45:19 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8887 Error: listen EADDRINUSE: address already in use 127.0.0.1:8887
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 09:45:23 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:18
+    16| 		$('[data-toggle="tooltip"]').tooltip();
+    17| 		crontabs = JSON.parse('<%- crontabs.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+ >> 18| 		routes = JSON.parse('<%- routes %>');
+    19| 		$("#env_vars").val(`<%- env  %>`);
+    20| 	})
+    21| </script>
+
+routes is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":15:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+    at ServerResponse.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/response.js:909:7)
+    at file:///Users/maden/Documents/Linux/Scripts/crontab-ui/app.js:323:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-06-25 09:45:42 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8887 Error: listen EADDRINUSE: address already in use 127.0.0.1:8887
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 09:45:46 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:18
+    16| 		$('[data-toggle="tooltip"]').tooltip();
+    17| 		crontabs = JSON.parse('<%- crontabs.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+ >> 18| 		routes = JSON.parse('<%- routes %>');
+    19| 		$("#env_vars").val(`<%- env  %>`);
+    20| 	})
+    21| </script>
+
+routes is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":15:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+    at ServerResponse.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/response.js:909:7)
+    at file:///Users/maden/Documents/Linux/Scripts/crontab-ui/app.js:323:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-06-25 09:46:25 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 09:48:58 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8887 Error: listen EADDRINUSE: address already in use 127.0.0.1:8887
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 17:05:35 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:18
+    16| 		$('[data-toggle="tooltip"]').tooltip();
+    17| 		crontabs = JSON.parse('<%- crontabs.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+ >> 18| 		routes = JSON.parse('<%- routes %>');
+    19| 		$("#env_vars").val(`<%- env  %>`);
+    20| 	})
+    21| </script>
+
+routes is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":15:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+    at ServerResponse.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/response.js:909:7)
+    at file:///Users/maden/Documents/Linux/Scripts/crontab-ui/app.js:321:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-06-25 17:06:06 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8887 Error: listen EADDRINUSE: address already in use 127.0.0.1:8887
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 17:06:11 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:18
+    16| 		$('[data-toggle="tooltip"]').tooltip();
+    17| 		crontabs = JSON.parse('<%- crontabs.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+ >> 18| 		routes = JSON.parse('<%- routes %>');
+    19| 		$("#env_vars").val(`<%- env  %>`);
+    20| 	})
+    21| </script>
+
+routes is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":15:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+    at ServerResponse.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/response.js:909:7)
+    at file:///Users/maden/Documents/Linux/Scripts/crontab-ui/app.js:321:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-06-25 17:06:39 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8887 Error: listen EADDRINUSE: address already in use 127.0.0.1:8887
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 17:06:43 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:18
+    16| 		$('[data-toggle="tooltip"]').tooltip();
+    17| 		crontabs = JSON.parse('<%- crontabs.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+ >> 18| 		routes = JSON.parse('<%- routes %>');
+    19| 		$("#env_vars").val(`<%- env  %>`);
+    20| 	})
+    21| </script>
+
+routes is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":15:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+    at ServerResponse.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/response.js:909:7)
+    at file:///Users/maden/Documents/Linux/Scripts/crontab-ui/app.js:321:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-06-25 17:07:31 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:10:38 [31merror[39m: Uncaught Exception: listen EADDRINUSE: address already in use 127.0.0.1:8887 Error: listen EADDRINUSE: address already in use 127.0.0.1:8887
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at node:net:2205:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 17:10:43 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:12:44 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:13:07 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:13:31 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:13:45 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:13:50 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:14:29 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:14:34 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:16:20 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:16:25 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:17:20 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:17:25 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:18:35 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:18:40 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:19:22 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:19:27 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:20:00 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:20:05 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:21:18 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:21:23 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:21:52 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:21:57 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:22:43 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:22:48 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:23:46 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:23:51 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:25:30 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:25:35 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:26:37 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:26:42 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:27:44 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 17:27:49 [31merror[39m: Application error ReferenceError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:20
+    18|           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Backups <span class="caret"></span></a>
+    19|           <ul class="dropdown-menu" role="menu">
+ >> 20| 	    <% if (backups.length == 0){ %>
+    21|             	<li><a href="#">None</a></li>
+    22| 	    <% } else { %>
+    23| 	    	<% backups.forEach(function(file){ %>
+
+backups is not defined
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":15:8)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:574:3)
+2025-06-25 17:35:27 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 18:35:59 [31merror[39m: Failed to start application: Unexpected token '}' SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:349:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:106:18)
+    at #translate (node:internal/modules/esm/loader:544:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:591:27)
+    at async #link (node:internal/modules/esm/module_job:141:19)
+2025-06-25 18:38:33 [31merror[39m: Failed to start application: (intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value).catch is not a function TypeError: (intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value)(intermediate value).catch is not a function
+    at file:///Users/maden/Documents/Linux/Scripts/crontab-ui/app.js:557:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)
+    at async file:///Users/maden/Documents/Linux/Scripts/crontab-ui/server.js:117:5
+2025-06-25 18:39:54 [31merror[39m: Application error SyntaxError: /Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs:24
+    22| </head>
+    23| <body>
+ >> 24| <%- include('navbar.ejs') -%>
+    25| <div class="container-fluid">
+    26| 	<div class="alert alert-info" role="alert">
+    27| 		<strong>Security Notice:</strong> This crontab UI includes security validations to prevent dangerous commands. 
+
+/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs:11
+    9|         <span class="icon-bar"></span>
+    10|       </button>
+ >> 11|       <a class="navbar-brand" href="<%= JSON.parse(routes).root %>">Crontab UI</a>
+    12|     </div>
+    13| 
+    14|     <!-- Collect the nav links, forms, and other content for toggling -->
+
+"[object Object]" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/navbar.ejs":12:31)
+    at navbar (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at include (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:701:39)
+    at eval ("/Users/maden/Documents/Linux/Scripts/crontab-ui/views/index.ejs":21:17)
+    at index (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/maden/Documents/Linux/Scripts/crontab-ui/node_modules/express/lib/application.js:627:10)
