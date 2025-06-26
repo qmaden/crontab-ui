@@ -18,6 +18,7 @@ RUN apk --no-cache add \
     nodejs \
     npm \
     supervisor \
+    dcron \
     tzdata \
     curl \
     && rm -rf /var/cache/apk/*
@@ -32,8 +33,8 @@ ENV PORT=8000
 ENV CRON_IN_DOCKER=true
 ENV NODE_ENV=production
 
-# Create necessary directories and files
-RUN mkdir -p $CRON_PATH /var/log/supervisor \
+# Create necessary directories and files with proper permissions
+RUN mkdir -p $CRON_PATH /crontab-ui/logs \
     && touch $CRON_PATH/root \
     && chmod +x $CRON_PATH/root
 
@@ -46,15 +47,15 @@ COPY --from=builder /app/node_modules ./node_modules
 # Copy application code
 COPY . .
 
-# Create non-root user for security
+# Create non-root user for security and set proper permissions
 RUN addgroup -g 1001 -S nodejs \
     && adduser -S nodejs -u 1001 \
     && chown -R nodejs:nodejs /crontab-ui \
-    && chmod +x /crontab-ui/start-secure.sh
+    && chmod +x /crontab-ui/start-secure.sh 2>/dev/null || true
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:$PORT/health || exit 1
+    CMD curl -f http://localhost:8000/health || exit 1
 
 # Labels for better container management
 LABEL maintainer="crontab-ui"
@@ -63,10 +64,7 @@ LABEL version="0.5.0"
 LABEL org.opencontainers.image.source="https://github.com/yourusername/crontab-ui"
 
 # Expose port
-EXPOSE $PORT
+EXPOSE 8000
 
-# Use non-root user
-USER nodejs
-
-# Start supervisor
+# Start supervisor as root (it will drop privileges for individual programs)
 CMD ["supervisord", "-c", "/etc/supervisord.conf"]

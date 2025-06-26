@@ -126,6 +126,96 @@ make release
 - Volume mounting for development
 ```
 
+## Volume Mounting Options
+
+Crontab-UI supports different volume mounting strategies for data persistence:
+
+### Option 1: Docker Volumes (Recommended)
+
+Uses Docker-managed volumes for data persistence. This is the default configuration and works well for most production deployments:
+
+```bash
+# Using default docker-compose.yml
+docker-compose up -d
+```
+
+**Advantages:**
+- Docker manages the volume lifecycle
+- Better performance on Docker Desktop
+- Automatic backup capabilities with Docker
+- Platform-independent
+
+### Option 2: Host Filesystem Mounting
+
+Mounts host directories directly into the container. Useful for development or when you need direct access to crontab files:
+
+```bash
+# Using the host filesystem compose file
+docker-compose -f docker-compose.host.yml up -d
+
+# Or create data directories and use modified docker-compose.yml
+mkdir -p ./data/{crontabs,logs}
+# Then uncomment the host mount lines in docker-compose.yml
+```
+
+**Advantages:**
+- Direct access to crontab files from host system
+- Easy backup and migration
+- Useful for development and debugging
+- Can integrate with existing host cron systems
+
+### Option 3: Custom Volume Mounts
+
+For advanced use cases, you can create custom volume mounts:
+
+```bash
+docker run -d \
+  -p 8000:8000 \
+  -v /path/to/your/crontabs:/crontab-ui/crontabs \
+  -v /path/to/your/logs:/crontab-ui/logs \
+  -v /var/spool/cron/crontabs:/host-crontabs:ro \
+  -e BASIC_AUTH_USER=admin \
+  -e BASIC_AUTH_PWD=changeme \
+  crontab-ui:latest
+```
+
+### Volume Structure
+
+The following directories are used for data persistence:
+
+```
+crontab-ui/
+├── crontabs/           # Crontab database and configurations
+│   ├── crontab.db     # SQLite database with cron jobs
+│   └── logs/          # Individual job execution logs
+└── logs/              # Application logs
+    ├── crontab-ui.log
+    ├── crontab-ui.error.log
+    └── supervisor.log
+```
+
+### Host System Integration
+
+To integrate with the host system's cron jobs:
+
+1. **Read-only access to host crontabs:**
+   ```bash
+   -v /var/spool/cron/crontabs:/host-crontabs:ro
+   ```
+
+2. **Backup host crontabs:**
+   ```bash
+   -v /etc/crontab:/host-crontab:ro
+   ```
+
+3. **Full integration (advanced):**
+   ```bash
+   -v /var/spool/cron:/var/spool/cron
+   -v /etc/crontab:/etc/crontab
+   ```
+
+**⚠️ Warning:** Full integration with host cron system requires careful permission management and may affect system stability.
+
 ## Deployment Options
 
 ### 1. Local Development

@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  crontab-ui:
+    build: .
+    container_name: crontab-ui-host
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - BASIC_AUTH_USER=${BASIC_AUTH_USER:-admin}
+      - BASIC_AUTH_PWD=${BASIC_AUTH_PWD:-changeme}
+    volumes:
+      # Mount host filesystem for crontab persistence
+      - ./data/crontabs:/crontab-ui/crontabs
+      - ./data/logs:/crontab-ui/logs

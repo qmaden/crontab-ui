@@ -16,8 +16,15 @@ services:
       - PORT=8000
       - CRON_IN_DOCKER=true
     volumes:
+      # Option 1: Use Docker volumes (default - recommended for most users)
       - crontab_data:/crontab-ui/crontabs
       - crontab_logs:/crontab-ui/logs
+      
+      # Option 2: Mount host filesystem (uncomment lines below and comment out lines above)
+      # This allows direct access to host crontabs - useful for development or direct management
+      # - ./data/crontabs:/crontab-ui/crontabs
+      # - ./data/logs:/crontab-ui/logs
+      # - /etc/crontabs:/etc/crontabs:ro  # Read-only access to host system crontabs
     networks:
       - crontab-network
     healthcheck:

@@ -1,0 +1,55 @@
+# Simple Dockerfile without supervisor for troubleshooting
+FROM node:20-alpine
+
+# Install runtime dependencies
+RUN apk --no-cache add \
+    curl \
+    dcron \
+    && rm -rf /var/cache/apk/*
+
+# Set working directory
+WORKDIR /crontab-ui
+
+# Environment variables
+ENV CRON_PATH=/etc/crontabs
+ENV HOST=0.0.0.0
+ENV PORT=8000
+ENV CRON_IN_DOCKER=true
+ENV NODE_ENV=production
+
+# Create necessary directories and files
+RUN mkdir -p $CRON_PATH /crontab-ui/logs \
+    && touch $CRON_PATH/root \
+    && chmod +x $CRON_PATH/root
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production && npm cache clean --force
+
+# Copy application code
+COPY . .
+
+# Create startup script
+RUN echo '#!/bin/sh' > /start.sh && \
+    echo 'echo "Starting cron daemon..."' >> /start.sh && \
+    echo 'crond -l 2 -f -c $CRON_PATH &' >> /start.sh && \
+    echo 'echo "Starting crontab-ui..."' >> /start.sh && \
+    echo 'exec node server.js' >> /start.sh && \
+    chmod +x /start.sh
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:$PORT/health || exit 1
+
+# Labels
+LABEL maintainer="crontab-ui"
+LABEL description="Simple Crontab-UI docker image"
+LABEL version="0.5.0"
+
+# Expose port
+EXPOSE $PORT
+
+# Start both services
+CMD ["/start.sh"]
